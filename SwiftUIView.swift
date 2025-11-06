@@ -43,7 +43,13 @@ struct Person: Codable  {
         case birthpath
         case fullnameofperson = "full_name_of_person"
     }
-    
-    
+}
+
+struct SwiftUIView: View {
+    var body: some View {
+        HStack{
+            
+        }
+    }
 }
 
