@@ -11,6 +11,7 @@ import Foundation
 class PersonInfoViewModel: ObservableObject {
     @Published var person: PersonInfo?
     @Published var errorMessage: String?
+    //接json
     func fetchPerson() {
         let jsonData = """
         {
@@ -25,10 +26,25 @@ class PersonInfoViewModel: ObservableObject {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         
         do{
-            let decoderPerson = try decoder.decode(PersonInfo.self, from: data)
-            self.person = decoderPerson
+            person = try decoder.decode(PersonInfo.self, from: data)
         }catch{
-            self.errorMessage = error.localizedDescription
+            errorMessage = error.localizedDescription
+        }
+    }
+    
+    //添加编码逻辑
+    func encodePerson() -> String?{
+        guard let person = person else {return nil}
+        let encoder = JSONEncoder()
+        encoder.keyEncodingStrategy = .convertToSnakeCase
+        encoder.outputFormatting = .prettyPrinted
+        
+        do {
+            let data = try encoder.encode(person)
+            return String(data: data,encoding: .utf8)
+        } catch {
+            errorMessage = error.localizedDescription
+            return nil
         }
     }
 }
