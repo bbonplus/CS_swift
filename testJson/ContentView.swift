@@ -10,6 +10,8 @@ import SwiftUI
 struct ContentView: View {
     //People variable starting with a empty array of Person
     @State private var people = [Person]()
+    @State private var roll = 0
+    @State private var count = 0
         
         var body: some View {
             VStack {
@@ -22,10 +24,34 @@ struct ContentView: View {
 ////                        Text(person.last)
 //                    }
 //                }
+                Text("while number = 20 ，can stop!")
+                
+                Button("start rolling"){
+                    Task{
+                        while roll != 20{
+                            roll = Int.random(in: 1...20)
+                            try? await Task.sleep(for: .milliseconds(200))
+                            count += 1
+                        }
+                    }
+                }
+                
+                if roll == 20{
+                    Text("you win")
+                        .font(.title)
+                        .foregroundStyle(.red)
+                }
+                
+                Text(verbatim: "\(roll)")
+                Text(verbatim: "\(count)")
+                Text("今日幸运度为：\(count*100/20)%")
+                
+                Button("restart"){
+                    roll = 0
+                }
+                
             }
-            .onAppear {
-                people = decode("people.json")
-            }
+            .padding()
         }
     
     
